@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { app, database } from "../firebaseConfig";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
 const FireStore = () => {
   const [data, setData] = useState({});
@@ -43,6 +50,33 @@ const FireStore = () => {
       });
   };
 
+  const updateData = () => {
+    const docToUpdate = doc(database, "users", "Yn3bJkjMGpGNoDsqZULx");
+
+    updateDoc(docToUpdate, {
+      email: "abc@gmail.com",
+      password: "123",
+    })
+      .then(() => {
+        alert("data updated!");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
+  const deleteData = () => {
+    const docToUpdate = doc(database, "users", "AeWvhUrXfs8hxScLbY8Q");
+
+    deleteDoc(docToUpdate)
+      .then(() => {
+        alert("data deleted!");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
   return (
     <>
       <div className="form">
@@ -62,7 +96,7 @@ const FireStore = () => {
         {/* <button type="submit" onClick={handleSubmit}>
           Submit
         </button> */}
-        <button type="submit" onClick={getData}>
+        <button type="submit" onClick={deleteData}>
           get data
         </button>
       </div>
