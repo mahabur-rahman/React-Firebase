@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import { app } from "../firebaseConfig";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { database, app } from "../firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
 
-const FormData = () => {
-  const auth = getAuth();
-  const googleProvider = new GoogleAuthProvider();
+const FirebaseFireStore = () => {
   const [inputData, setInputData] = useState({});
+  const collectionRef = collection(database, "users");
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -21,17 +14,29 @@ const FormData = () => {
   };
 
   // btn click
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
 
-    // register / signIn
-    signInWithPopup(auth, googleProvider)
+    addDoc(collectionRef, {
+      email: inputData.email,
+      password: inputData.password,
+    })
       .then((res) => {
-        console.log(res.user);
+        alert("data added");
       })
       .catch((err) => {
         alert(err.message);
       });
+
+    // try {
+    //   addDoc(collectionRef, {
+    //     email: inputData.email,
+    //     password: inputData.password,
+    //   });
+    //   alert("data added");
+    // } catch (err) {
+    //   alert(err.message);
+    // }
   };
 
   return (
@@ -58,4 +63,4 @@ const FormData = () => {
   );
 };
 
-export default FormData;
+export default FirebaseFireStore;

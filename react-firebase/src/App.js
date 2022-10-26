@@ -1,8 +1,9 @@
 import "./App.css";
+import FirebaseFireStore from "./components/FirebaseFireStore";
 import FormData from "./components/FormData";
 
 const App = () => {
-  return <FormData />;
+  return <FirebaseFireStore />;
 };
 
 export default App;
