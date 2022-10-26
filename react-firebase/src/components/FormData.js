@@ -1,26 +1,29 @@
 import React, { useState } from "react";
 import { app } from "../firebaseConfig";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const FormData = () => {
-  const [data, setData] = useState({});
+  const auth = getAuth();
+  const [inputData, setInputData] = useState({});
 
   const handleChange = (e) => {
-    let newInput = { [e.target.name]: e.target.value };
+    const value = e.target.value;
+    const name = e.target.name;
 
-    setData({ ...data, ...newInput });
+    setInputData({ ...inputData, [name]: value });
   };
 
-  let auth = getAuth();
-  let googleProvider = new GoogleAuthProvider();
+  // btn click
+  const handleClick = (e) => {
+    e.preventDefault();
 
-  const handleSubmit = (e) => {
-    signInWithPopup(auth, googleProvider)
-      .then((response) => {
-        console.log(response.user);
+    // register
+    createUserWithEmailAndPassword(auth, inputData.email, inputData.password)
+      .then((res) => {
+        console.log(res.user);
       })
       .catch((err) => {
-        console.log(err.message);
+        alert(err.message);
       });
   };
 
@@ -40,7 +43,7 @@ const FormData = () => {
           onChange={handleChange}
         />
 
-        <button type="submit" onClick={handleSubmit}>
+        <button type="submit" onClick={handleClick}>
           Submit
         </button>
       </div>
