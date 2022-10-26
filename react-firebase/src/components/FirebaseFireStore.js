@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { database, app } from "../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 const FirebaseFireStore = () => {
+  const [user, setUser] = useState([]);
+
   const [inputData, setInputData] = useState({});
   const collectionRef = collection(database, "users");
 
@@ -13,7 +15,7 @@ const FirebaseFireStore = () => {
     setInputData({ ...inputData, [name]: value });
   };
 
-  // btn click
+  // btn click || add data
   const handleClick = async (e) => {
     e.preventDefault();
 
@@ -27,16 +29,20 @@ const FirebaseFireStore = () => {
       .catch((err) => {
         alert(err.message);
       });
+  };
 
-    // try {
-    //   addDoc(collectionRef, {
-    //     email: inputData.email,
-    //     password: inputData.password,
-    //   });
-    //   alert("data added");
-    // } catch (err) {
-    //   alert(err.message);
-    // }
+  //   get data from fireStore
+
+  const getData = () => {
+    getDocs(collectionRef)
+      .then((res) => {
+        setUser(
+          res.docs.map((item) => {
+            return { ...item.data(), id: item.id };
+          })
+        );
+      })
+      .catch((err) => alert(err.message));
   };
 
   return (
@@ -55,9 +61,21 @@ const FirebaseFireStore = () => {
           onChange={handleChange}
         />
 
+        {/* read data  */}
+        <ul>
+          {user.map((list) => (
+            <li key={list.id}>
+              <span>Id : {list.id} </span>
+              <span> Email : {list.email}</span>
+            </li>
+          ))}
+        </ul>
+
         <button type="submit" onClick={handleClick}>
           Submit
         </button>
+
+        <button onClick={getData}>Get data</button>
       </div>
     </>
   );
