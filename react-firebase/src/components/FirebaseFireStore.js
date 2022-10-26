@@ -6,6 +6,7 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { async } from "@firebase/util";
 
@@ -68,6 +69,18 @@ const FirebaseFireStore = () => {
     }
   };
 
+  // delete document
+  const deleteData = async () => {
+    const deleteUser = doc(database, "users", "8NowfsvbrmnJ03Y5oBQs");
+    deleteDoc(deleteUser)
+      .then(() => {
+        alert("data deleted...");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
   return (
     <>
       <div className="form">
@@ -100,6 +113,7 @@ const FirebaseFireStore = () => {
 
         <button onClick={getData}>Get</button>
         <button onClick={updateData}>Update</button>
+        <button onClick={deleteData}>Delete</button>
       </div>
     </>
   );
