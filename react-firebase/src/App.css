@@ -6,3 +6,14 @@ input {
     margin-top: 1rem;
     padding: 5px;
 }
+
+button {
+    background-color: rgb(205, 204, 204);
+    color: black;
+    padding: 10px 20px;
+    display: flex;
+    border: none;
+    flex-direction: column;
+    margin: 5px;
+    cursor: pointer;
+}

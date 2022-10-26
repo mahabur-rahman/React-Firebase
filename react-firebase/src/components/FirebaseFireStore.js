@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { database, app } from "../firebaseConfig";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { async } from "@firebase/util";
 
 const FirebaseFireStore = () => {
   const [user, setUser] = useState([]);
@@ -45,6 +52,22 @@ const FirebaseFireStore = () => {
       .catch((err) => alert(err.message));
   };
 
+  //   updateData
+
+  const updateData = async () => {
+    try {
+      const docToUpdate = doc(database, "users", "8NowfsvbrmnJ03Y5oBQs");
+      updateDoc(docToUpdate, {
+        email: "abc@gmail.com",
+        password: 123456,
+      });
+
+      alert("data updated successful!");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <>
       <div className="form">
@@ -75,7 +98,8 @@ const FirebaseFireStore = () => {
           Submit
         </button>
 
-        <button onClick={getData}>Get data</button>
+        <button onClick={getData}>Get</button>
+        <button onClick={updateData}>Update</button>
       </div>
     </>
   );
