@@ -8,7 +8,9 @@ const GetStorage = () => {
   const handleClick = (e) => {
     e.preventDefault();
 
-    const mountainsRef = ref(storage, inputData.name);
+    // const mountainsRef = ref(storage, inputData.name);
+    const mountainsRef = ref(storage, `images/${inputData.name}`);
+
     const uploadTask = uploadBytesResumable(mountainsRef, inputData);
 
     uploadTask.on(
