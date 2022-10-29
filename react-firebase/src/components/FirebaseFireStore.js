@@ -81,6 +81,30 @@ const FirebaseFireStore = () => {
       });
   };
 
+  let fName = "mahabur";
+
+  function first() {
+    var welcome = "hello";
+
+    second();
+    console.log(welcome + fName);
+  }
+
+  function second() {
+    var welcome2 = "hi";
+
+    third();
+
+    console.log(welcome2 + fName);
+  }
+
+  function third() {
+    var welcome3 = "hey";
+    console.log(welcome3 + fName);
+  }
+
+  first();
+
   return (
     <>
       <div className="form">
