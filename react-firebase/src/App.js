@@ -6,9 +6,10 @@ import RealTimeUpdate from "./components/RealTimeUpdate";
 import FirebaseStoreQuery from "./components/FirebaseStoreQuery";
 import Test from "./components/Test";
 import SecurityRules from "./components/SecurityRules";
+import FirebaseOnStateChanged from "./components/FirebaseOnStateChanged";
 
 const App = () => {
-  return <SecurityRules />;
+  return <FirebaseOnStateChanged />;
 };
 
 export default App;
