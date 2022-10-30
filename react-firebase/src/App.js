@@ -4,9 +4,11 @@ import FormData from "./components/FormData";
 import GetStorage from "./components/GetStorage";
 import RealTimeUpdate from "./components/RealTimeUpdate";
 import FirebaseStoreQuery from "./components/FirebaseStoreQuery";
+import Test from "./components/Test";
+import SecurityRules from "./components/SecurityRules";
 
 const App = () => {
-  return <FirebaseStoreQuery />;
+  return <SecurityRules />;
 };
 
 export default App;
