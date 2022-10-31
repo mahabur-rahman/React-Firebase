@@ -5,14 +5,17 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 function Crud() {
   const [data, setData] = useState({
+    name: "",
     email: "",
     password: "",
   });
 
   const auth = getAuth();
+  const collectionRef = collection(database, "users");
 
   //   handleChange
   const handleChange = (e) => {
@@ -46,8 +49,46 @@ function Crud() {
         console.log(err.message);
       });
   };
+
+  //   add data
+  const addData = (e) => {
+    e.preventDefault();
+
+    addDoc(collectionRef, data)
+      .then((res) => {
+        alert("data added!");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
+  //   get data
+  const getData = (e) => {
+    e.preventDefault();
+
+    getDocs(collectionRef)
+      .then((res) => {
+        console.log(
+          res.docs.map((item) => {
+            return { ...item.data(), id: item.id };
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="form-inputs">
+      <input
+        type="text"
+        placeholder="Name"
+        name="name"
+        onChange={handleChange}
+      />
+      <br />
       <input
         type="email"
         placeholder="Email"
@@ -61,13 +102,20 @@ function Crud() {
         name="password"
         onChange={handleChange}
       />
-
+      {/* 
       <button type="submit" onClick={signUp}>
         Sign Up
       </button>
 
       <button type="submit" onClick={signIn}>
         SignIn
+      </button> */}
+
+      <button type="submit" onClick={addData}>
+        Add
+      </button>
+      <button type="submit" onClick={getData}>
+        Get
       </button>
     </div>
   );
