@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { app, database } from "../../firebaseConfig";
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 
 function Crud() {
   const [data, setData] = useState({
@@ -13,6 +20,8 @@ function Crud() {
     email: "",
     password: "",
   });
+
+  const [users, setUsers] = useState([]);
 
   const auth = getAuth();
   const collectionRef = collection(database, "users");
@@ -65,11 +74,9 @@ function Crud() {
 
   //   get data
   const getData = (e) => {
-    e.preventDefault();
-
     getDocs(collectionRef)
       .then((res) => {
-        console.log(
+        setUsers(
           res.docs.map((item) => {
             return { ...item.data(), id: item.id };
           })
@@ -79,6 +86,37 @@ function Crud() {
         console.log(err);
       });
   };
+
+  //   update data
+  const updateData = (id) => {
+    const updateToDoc = doc(database, "users", id);
+
+    updateDoc(updateToDoc, {
+      name: data.name,
+    })
+      .then((res) => {
+        alert("data updated!");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
+
+  //   delete data
+  const deleteData = (id) => {
+    const deleteToDoc = doc(database, "users", id);
+    deleteDoc(deleteToDoc)
+      .then(() => {
+        alert("data deleted!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div className="form-inputs">
@@ -114,9 +152,25 @@ function Crud() {
       <button type="submit" onClick={addData}>
         Add
       </button>
-      <button type="submit" onClick={getData}>
+      {/* <button type="submit" onClick={getData}>
         Get
-      </button>
+      </button> */}
+
+      <h1>Users info</h1>
+
+      {users?.map((user) => (
+        <>
+          <div key={user.id}>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+            <p>{user.password}</p>
+          </div>
+          <button onClick={() => updateData(user.id)}>Update</button>
+          <button onClick={() => deleteData(user.id)}>Delete</button>
+
+          <hr />
+        </>
+      ))}
     </div>
   );
 }
